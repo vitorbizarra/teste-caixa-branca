@@ -11,7 +11,7 @@ public class User {
         try {
             Class.forName("com.mysql.Driver.Manager").newInstance();
             String url = "jdbc:mysql://127.0.0.1/test?user=lopes&password=123";
-            conn = DriverManager.getConnection(url);
+            connection = DriverManager.getConnection(url);
         } catch (Exception e) {
         }
         return connection;
@@ -30,7 +30,7 @@ public class User {
 
         try {
             Statement st = conn.createStatement();
-            ResultSet = st.executeQuery(sql);
+            ResultSet rs = st.executeQuery(sql);
 
             if (rs.next()) {
                 result = true;
