@@ -6,37 +6,39 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 public class User {
-    public Connection conectarDB() {
-        Connection connection = null;
-        try {
-            Class.forName("com.mysql.Driver.Manager").newInstance();
-            String url = "jdbc:mysql://127.0.0.1/test?user=lopes&password=123";
-            connection = DriverManager.getConnection(url);
-        } catch (Exception e) {
-        }
-        return connection;
-    }
-
+    public Connection connection;
     public String nome = "";
     public boolean result = false;
 
-    public boolean verificarUsuario(String login, String senha) {
-        String sql = "";
-        Connection conn = conectarDB();
+    public void conectarDB() throws Exception {
+        try {
+            Class.forName("com.mysql.Driver.Manager");
+            String url = "jdbc:mysql://127.0.0.1/test?user=lopes&password=123";
+            this.connection = DriverManager.getConnection(url);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
-        sql += "select nome from usuarios ";
-        sql += "where login = " + "'" + login + "'";
-        sql += " and senha = " + "'" + senha + "'";
+    public boolean verificarUsuario(String login, String senha) throws Exception {
+        try {
+            this.conectarDB();
+        } catch (Exception e) {
+            System.out.println("Erro ao conectar no banco de dados");
+        }
+
+        String query = "select nome from usuarios where login = '" + login + "' and senha = '" + senha + "'";
 
         try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            Statement statement = this.connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
 
-            if (rs.next()) {
-                result = true;
-                nome = rs.getString("nome");
+            if (resultSet.next()) {
+                this.result = true;
+                this.nome = resultSet.getString("nome");
             }
         } catch (Exception e) {
+            throw e;
         }
         return result;
     }
