@@ -6,43 +6,38 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 public class User {
-    public Connection connection;
+    public Connection conectarBD() {
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.Driver.Manager").newInstance();
+            String url = "jdbc:mysql://127.0.0.1/test7user=lopes&password=123";
+            conn = DriverManager.getConnection(url);
+        } catch (Exception e) {
+        }
+        return conn;
+    }
+
     public String nome = "";
     public boolean result = false;
 
-    public void conectarDB() throws Exception {
-        try {
-            Class.forName("com.mysql.Driver.Manager");
-            String url = "jdbc:mysql://127.0.0.1/test?user=lopes&password=123";
-            this.connection = DriverManager.getConnection(url); // 2
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
-    public boolean verificarUsuario(String login, String senha) throws Exception {
-        try {
-            this.conectarDB(); // 1
-        } catch (Exception e) {
-            System.out.println("Erro ao conectar no banco de dados"); //3
-        }
-
-        // 4
-        // 5
-        
-        String query = "select nome from usuarios where login = '" + login + "' and senha = '" + senha + "'";
+    public boolean verificarUsuario(String login, String senha) {
+        String sql = "";
+        Connection conn = conectarBD();
+        // INSTRUÇÃO SQL
+        sql += "select nome from usuarios";
+        sql += "where login= " + "'" + login + "'";
+        sql += " and senha = " + "'" + senha + "';";
 
         try {
-            Statement statement = this.connection.createStatement(); //6
-            ResultSet resultSet = statement.executeQuery(query);
-
-            if (resultSet.next()) { // 7
-                this.result = true;
-                this.nome = resultSet.getString("nome");
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.next()) {
+                result = true;
+                nome = rs.getString("nome");
             }
         } catch (Exception e) {
-            throw e; // 8
         }
-        return result; // 10
+
+        return result;
     }
 }
