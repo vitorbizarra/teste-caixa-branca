@@ -6,6 +6,12 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 public class User {
+
+    /**
+     * Método responsável por se conectar ao banco de dados
+     *  
+     * @return Connection
+     */
     public Connection conectarBD() {
         Connection conn = null;
         try {
@@ -17,9 +23,23 @@ public class User {
         return conn;
     }
 
+    /**
+     * O nome do usuário
+     */
     public String nome = "";
+
+    /**
+     * True se existir resultado na consulta do banco, caso contrário, false
+     */
     public boolean result = false;
 
+    /**
+     * Método responsável por verificar se o usuário com o 
+     * login e senha informados existe no banco de dados
+     * @param login - O login do usuário
+     * @param senha - A senha do usuário
+     * @return TRUE caso o usuário exista, caso contrário, false
+     */
     public boolean verificarUsuario(String login, String senha) {
         String sql = "";
         Connection conn = conectarBD();
