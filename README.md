@@ -197,3 +197,7 @@ Cálculo: V(G) = (11 - 10) + 2 = 3
 * 1;2;3;
 * 1;2;4;5;6;7;8;6;
 * 1;2;4;5;6;7;8;9;10;
+
+## Etapa 3
+
+O projeto contém uma classe de usuário (`User.java`) que possuí métodos para se conectar ao banco de dados e consultar um usuário no banco.
